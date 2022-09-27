@@ -23,6 +23,7 @@ void display_prisoners(const std::vector<Prisoner*>& vec);
 bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner);
 
 bool run_sim(const bool random_search);
+double sim_master(const bool random_search);
 
 double random_probability();
 double loop_probability();
@@ -31,27 +32,16 @@ int main()
 {
 	std::cout << std::boolalpha;
 
-	double total{}; // total successful runs (where all prisoners found their number)
+	//double sim_random_probability{ sim_master(true) };
+	double sim_loop_probability{ sim_master(false) };
 
-	for (size_t i{}; i < num_sims; ++i)
-	{
-		if (i % 1000 == 0)
-			std::cout << "Sim: " << i << std::endl;
-
-		if (run_sim(random_search))
-			total++;
-	}
-
-	std::cout << std::endl;
-
-	double avg{ total / num_sims }; // should be 31%
-
-
-	std::cout << "\nEstimated probabilities:" << std::endl;
+	std::cout << "\nCalculated probabilities:" << std::endl;
 	std::cout << "Random search: " << random_probability() << std::endl;
 	std::cout << "Loop strategy: " << loop_probability() << std::endl;
 
-	std::cout << "\nAverage success for " << num_sims << " simulations: " << avg << std::endl;
+	std::cout << "\nAverage success for " << num_sims << " simulations:" << std::endl;
+	//std::cout << "Random search: " << sim_random_probability << std::endl;
+	std::cout << "Loop strategy: " << sim_loop_probability << std::endl;
 
 	return 0;
 }
@@ -120,6 +110,26 @@ double random_probability()
 
 }
 
+double sim_master(const bool random_search)
+{
+	std::cout << "====== Starting sim, random_search = " << random_search << " ======" << std::endl;
+	double total{}; // total successful runs (where all prisoners found their number)
+
+	for (size_t i{}; i < num_sims; ++i)
+	{
+		if (i % 1000 == 0)
+			std::cout << "Sim: " << i << std::endl;
+
+		if (run_sim(random_search))
+			total++;
+	}
+
+	std::cout << std::endl;
+
+	double avg{ total / num_sims };
+	return avg;
+}
+
 bool run_sim(const bool random_search)
 {
 	// vector of size_t, num_boxes in size, all initialised to 0
@@ -138,7 +148,16 @@ bool run_sim(const bool random_search)
 
 	if (random_search)
 	{
-		// search randomly
+		//// search randomly
+		//// loop over each prisoner and search for their number
+		//for (auto p : prisoners)
+		//{
+		//	// if even one prisoner doesnt find their number, there is no point in continuing
+		//	if (!search_boxes_random(boxes, p))
+		//		break;
+
+		//	num_found++;
+		//}
 	}
 	else
 	{
@@ -146,7 +165,7 @@ bool run_sim(const bool random_search)
 		// loop over each prisoner and search for their number
 		for (auto p : prisoners)
 		{
-			// if even one prisoner doesnt find their number, there is no point in continuing G
+			// if even one prisoner doesnt find their number, there is no point in continuing
 			if (!search_boxes(boxes, p))
 				break;
 
@@ -218,3 +237,15 @@ bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner)
 
 	return found;
 }
+
+//bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner)
+//{
+//	bool found{ false };
+//	while (!found && prisoner->still_boxes_left())
+//	{
+//		size_t num_in_box = boxes.at(prisoner->get_box_to_search());
+//		found = prisoner->search_box(num_in_box);
+//	}
+//
+//	return found;
+//}

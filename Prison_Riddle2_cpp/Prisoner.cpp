@@ -15,6 +15,7 @@ bool Prisoner::search_box(const size_t num_in_box)
 	return is_number_found(num_in_box);
 }
 
+
 // method that checks if the number in the box is the prisoners number
 bool Prisoner::is_number_found(const size_t num_in_box)
 {
