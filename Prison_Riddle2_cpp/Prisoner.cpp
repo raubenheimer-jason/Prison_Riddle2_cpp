@@ -3,7 +3,7 @@
 
 // Constructor
 Prisoner::Prisoner(const size_t number, const size_t num_prisoners, const size_t max_search_boxes)
-	: number{ number }, num_prisoners{ num_prisoners }, max_search_boxes{ max_search_boxes }, boxes_searched{}, found_number{ false }, box_to_search{ number }
+	: number{ number }, num_prisoners{ num_prisoners }, max_search_boxes{ max_search_boxes }, boxes_searched{}, found_number{ false }, box_to_search{ number }, searched_boxes{}
 {
 }
 

@@ -2,6 +2,7 @@
 #define _PRISONER_H_
 
 #include <cstdint> // size_t
+#include <vector>
 
 class Prisoner
 {
@@ -12,6 +13,8 @@ private:
 	size_t boxes_searched;
 	bool found_number;
 	size_t box_to_search;
+	std::vector<size_t> searched_boxes;
+
 	bool is_number_found(const size_t num_in_box);
 
 public:

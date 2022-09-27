@@ -1,3 +1,8 @@
+/*
+TODO: Use inheritance to have "Loop_Prisoner" and "Random_Prisoner" which are derrived from "Prisoner"
+		-> override "get_box_to_search" method
+*/
+
 #include <iostream>
 #include <iomanip> // setprecision
 #include <vector>
@@ -10,7 +15,7 @@
 #include "Prisoner.h"
 
 const bool random_search{ false }; // set to true to search boxes randomly
-const size_t num_sims{ 100000 };
+const size_t num_sims{ 100 };
 
 const size_t num_prisoners{ 100 };
 const size_t num_boxes{ num_prisoners };
@@ -21,6 +26,7 @@ void initialise_prisoners(std::vector<Prisoner*>& vec);
 void display_boxes(const std::vector<size_t>& vec);
 void display_prisoners(const std::vector<Prisoner*>& vec);
 bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner);
+bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner);
 
 bool run_sim(const bool random_search, const std::vector<size_t>& boxes);
 void sim_master(double* loop_prob, double* random_prob);
@@ -31,9 +37,6 @@ double loop_probability();
 int main()
 {
 	std::cout << std::boolalpha;
-
-	//double sim_random_probability{ sim_master(true) };
-	//double sim_loop_probability{ sim_master(false) };
 
 	double sim_loop_prob{}, sim_random_prob{};
 	sim_master(&sim_loop_prob, &sim_random_prob);
@@ -94,10 +97,7 @@ double loop_probability()
 {
 	double p_fail{};
 	for (size_t i{ 51 }; i <= num_boxes; ++i)
-	{
-		//std::cout << i << std::endl;
 		p_fail += 1.0 / i;
-	}
 	return 1.0 - p_fail;
 }
 
@@ -141,20 +141,13 @@ void sim_master(double* loop_prob, double* random_prob)
 
 	std::cout << " sims done." << std::endl;
 
-	//double loop_avg{ static_cast<double>(total_loop) / num_sims };
+	// assign values to pointer arguments
 	*loop_prob = static_cast<double>(total_loop) / num_sims;
-	//double random_avg{ static_cast<double>(total_random) / num_sims };
 	*random_prob = static_cast<double>(total_random) / num_sims;
 }
 
 bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 {
-	//// vector of size_t, num_boxes in size, all initialised to 0
-	//std::vector<size_t> boxes(num_boxes, 0);
-	//initialise_boxes(boxes);
-	//// display shuffled boxes
-	////display_boxes(boxes);
-
 	// vector of prisoners
 	std::vector<Prisoner*> prisoners;
 	initialise_prisoners(prisoners);
@@ -165,16 +158,16 @@ bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 
 	if (random_search)
 	{
-		//// search randomly
-		//// loop over each prisoner and search for their number
-		//for (auto p : prisoners)
-		//{
-		//	// if even one prisoner doesnt find their number, there is no point in continuing
-		//	if (!search_boxes_random(boxes, p))
-		//		break;
+		// search randomly
+		// loop over each prisoner and search for their number
+		for (auto p : prisoners)
+		{
+			// if even one prisoner doesnt find their number, there is no point in continuing
+			if (!search_boxes_random(boxes, p))
+				break;
 
-		//	num_found++;
-		//}
+			num_found++;
+		}
 	}
 	else
 	{
@@ -195,14 +188,7 @@ bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 		delete p;
 	prisoners.clear();
 
-	// display prisoners
-	//display_prisoners(prisoners);
-
 	return (num_found == num_prisoners);
-
-	//double perc_found{ (static_cast<double>(num_found) / num_prisoners) * 100 };
-
-	//return perc_found;
 }
 
 void initialise_boxes(std::vector<size_t>& vec)
@@ -255,14 +241,18 @@ bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner)
 	return found;
 }
 
-//bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner)
-//{
-//	bool found{ false };
-//	while (!found && prisoner->still_boxes_left())
-//	{
-//		size_t num_in_box = boxes.at(prisoner->get_box_to_search());
-//		found = prisoner->search_box(num_in_box);
-//	}
-//
-//	return found;
-//}
+
+/*
+Need to search random boxes, dont search the same box more than once
+*/
+bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner)
+{
+	bool found{ false };
+	while (!found && prisoner->still_boxes_left())
+	{
+		size_t num_in_box = boxes.at(prisoner->get_box_to_search());
+		found = prisoner->search_box(num_in_box);
+	}
+
+	return found;
+}
