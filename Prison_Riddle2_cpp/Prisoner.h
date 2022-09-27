@@ -17,7 +17,7 @@ private:
 public:
 	Prisoner(const size_t number, const size_t num_prisoners, const size_t max_search_boxes);
 	//Prisoner(const Prisoner& p);
-	~Prisoner();
+	//~Prisoner();
 	bool search_box(const size_t num_in_box);
 	bool still_boxes_left();
 	void display() const;
