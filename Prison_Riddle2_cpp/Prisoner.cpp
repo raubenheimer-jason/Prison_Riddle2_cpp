@@ -5,22 +5,8 @@
 Prisoner::Prisoner(const size_t number, const size_t num_prisoners, const size_t max_search_boxes)
 	: number{ number }, num_prisoners{ num_prisoners }, max_search_boxes{ max_search_boxes }, boxes_searched{}, found_number{ false }, box_to_search{ number }
 {
-	//std::cout << "new Prisoner, location: " << this << std::endl;
 }
 
-//// Destructor
-//Prisoner::~Prisoner()
-//{
-//	delete this;
-//}
-
-//// Copy constructor
-//Prisoner::Prisoner(const Prisoner& p)
-//{
-//	boxes_searched = p.boxes_searched;
-//	found_number = p.found_number;
-//	box_to_search = p.box_to_search;
-//}
 
 bool Prisoner::search_box(const size_t num_in_box)
 {
@@ -33,8 +19,6 @@ bool Prisoner::search_box(const size_t num_in_box)
 bool Prisoner::is_number_found(const size_t num_in_box)
 {
 	if (num_in_box == number) {
-		//std::cout << " -- " << number << " number found... (location of found_number: " << &found_number << ")";
-		//std::cout << " -- " << number << " number found...";
 		found_number = true;
 	}
 
@@ -43,7 +27,6 @@ bool Prisoner::is_number_found(const size_t num_in_box)
 
 bool Prisoner::still_boxes_left()
 {
-	//std::cout << boxes_searched << "  " << max_search_boxes << std::endl;
 	return (boxes_searched < max_search_boxes);
 }
 
