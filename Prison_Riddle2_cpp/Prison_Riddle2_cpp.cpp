@@ -22,8 +22,8 @@ void display_boxes(const std::vector<size_t>& vec);
 void display_prisoners(const std::vector<Prisoner*>& vec);
 bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner);
 
-bool run_sim(const bool random_search);
-double sim_master(const bool random_search);
+bool run_sim(const bool random_search, const std::vector<size_t>& boxes);
+void sim_master(double* loop_prob, double* random_prob);
 
 double random_probability();
 double loop_probability();
@@ -33,15 +33,18 @@ int main()
 	std::cout << std::boolalpha;
 
 	//double sim_random_probability{ sim_master(true) };
-	double sim_loop_probability{ sim_master(false) };
+	//double sim_loop_probability{ sim_master(false) };
+
+	double sim_loop_prob{}, sim_random_prob{};
+	sim_master(&sim_loop_prob, &sim_random_prob);
 
 	std::cout << "\nCalculated probabilities:" << std::endl;
 	std::cout << "Random search: " << random_probability() << std::endl;
 	std::cout << "Loop strategy: " << loop_probability() << std::endl;
 
 	std::cout << "\nAverage success for " << num_sims << " simulations:" << std::endl;
-	//std::cout << "Random search: " << sim_random_probability << std::endl;
-	std::cout << "Loop strategy: " << sim_loop_probability << std::endl;
+	std::cout << "Random search: " << sim_random_prob << std::endl;
+	std::cout << "Loop strategy: " << sim_loop_prob << std::endl;
 
 	return 0;
 }
@@ -110,33 +113,47 @@ double random_probability()
 
 }
 
-double sim_master(const bool random_search)
+void sim_master(double* loop_prob, double* random_prob)
 {
-	std::cout << "====== Starting sim, random_search = " << random_search << " ======" << std::endl;
-	double total{}; // total successful runs (where all prisoners found their number)
+	std::cout << "Starting sims...";
+
+	// Variables that total successful runs (where all prisoners found their number)
+	size_t total_loop{};   // for the loop strategy
+	size_t total_random{}; // for the random
 
 	for (size_t i{}; i < num_sims; ++i)
 	{
-		if (i % 1000 == 0)
-			std::cout << "Sim: " << i << std::endl;
+		// boxes are initialised here so the random and loop sims have the same conditions
+		// vector of size_t, num_boxes in size, all initialised to 0
+		std::vector<size_t> boxes(num_boxes, 0);
+		initialise_boxes(boxes);
+		// display shuffled boxes
+		//display_boxes(boxes);
 
-		if (run_sim(random_search))
-			total++;
+		// loop strategy
+		if (run_sim(false, boxes))
+			total_loop++;
+
+		// random
+		if (run_sim(true, boxes))
+			total_random++;
 	}
 
-	std::cout << std::endl;
+	std::cout << " sims done." << std::endl;
 
-	double avg{ total / num_sims };
-	return avg;
+	//double loop_avg{ static_cast<double>(total_loop) / num_sims };
+	*loop_prob = static_cast<double>(total_loop) / num_sims;
+	//double random_avg{ static_cast<double>(total_random) / num_sims };
+	*random_prob = static_cast<double>(total_random) / num_sims;
 }
 
-bool run_sim(const bool random_search)
+bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 {
-	// vector of size_t, num_boxes in size, all initialised to 0
-	std::vector<size_t> boxes(num_boxes, 0);
-	initialise_boxes(boxes);
-	// display shuffled boxes
-	//display_boxes(boxes);
+	//// vector of size_t, num_boxes in size, all initialised to 0
+	//std::vector<size_t> boxes(num_boxes, 0);
+	//initialise_boxes(boxes);
+	//// display shuffled boxes
+	////display_boxes(boxes);
 
 	// vector of prisoners
 	std::vector<Prisoner*> prisoners;
