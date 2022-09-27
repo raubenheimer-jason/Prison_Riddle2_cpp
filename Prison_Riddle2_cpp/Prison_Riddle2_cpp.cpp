@@ -5,6 +5,7 @@
 #include <ranges>
 #include <random>
 #include <numeric> // iota
+#include <cmath> // pow
 
 #include "Prisoner.h"
 
@@ -21,31 +22,63 @@ void display_boxes(const std::vector<size_t>& vec);
 void display_prisoners(const std::vector<Prisoner*>& vec);
 bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner);
 
-double run_sim(const bool random_search);
+bool run_sim(const bool random_search);
+
+double random_probability();
+double proposed_tech_probability();
 
 int main()
 {
 	std::cout << std::boolalpha;
 
-	double total{};
+	std::cout << "Probability if all prisoners searched randomly: " << random_probability() << std::endl;
+
+	double total{}; // total successful runs (where all prisoners found their number)
 
 	for (size_t i{}; i < num_sims; ++i)
 	{
 		if (i % 1000 == 0)
 			std::cout << "Sim: " << i << std::endl;
-		total += run_sim(random_search);
+
+		if (run_sim(random_search))
+			total++;
 	}
 
 	std::cout << std::endl;
 
-	double avg{ total / num_sims };
+	double avg{ (total / num_sims) * 100 }; // should be 31%
 
 	std::cout << "Average success for " << num_sims << " simulations: " << avg << std::endl;
 
 	return 0;
 }
 
-double run_sim(const bool random_search)
+
+/*
+Calculate the probability of all prisoners finding their number if
+they each search using the proposed technique
+*/
+double proposed_tech_probability()
+{
+	double single_prisoner_probability{ static_cast<double>(max_search_boxes) / num_boxes };
+	double rand_probability{ (pow(single_prisoner_probability, num_prisoners)) * 100 };
+	return rand_probability;
+
+}
+
+/*
+Calculate the probability of all prisoners finding their number if
+they each search randomly
+*/
+double random_probability()
+{
+	double single_prisoner_probability{ static_cast<double>(max_search_boxes) / num_boxes };
+	double rand_probability{ (pow(single_prisoner_probability, num_prisoners)) * 100 };
+	return rand_probability;
+
+}
+
+bool run_sim(const bool random_search)
 {
 	// vector of size_t, num_boxes in size, all initialised to 0
 	std::vector<size_t> boxes(num_boxes, 0);
@@ -71,8 +104,11 @@ double run_sim(const bool random_search)
 		// loop over each prisoner and search for their number
 		for (auto p : prisoners)
 		{
-			if (search_boxes(boxes, p))
-				num_found++;
+			// if even one prisoner doesnt find their number, there is no point in continuing G
+			if (!search_boxes(boxes, p))
+				break;
+
+			num_found++;
 		}
 	}
 
@@ -84,9 +120,11 @@ double run_sim(const bool random_search)
 	// display prisoners
 	//display_prisoners(prisoners);
 
-	double perc_found{ (static_cast<double>(num_found) / num_prisoners) * 100 };
+	return (num_found == num_prisoners);
 
-	return perc_found;
+	//double perc_found{ (static_cast<double>(num_found) / num_prisoners) * 100 };
+
+	//return perc_found;
 }
 
 void initialise_boxes(std::vector<size_t>& vec)
