@@ -12,21 +12,28 @@ TODO: Use inheritance to have "Loop_Prisoner" and "Random_Prisoner" which are de
 #include <numeric> // iota
 #include <cmath> // pow
 
-#include "Prisoner.h"
+//#include "Prisoner.h"
+#include "Prisoner_Loop.h"
+#include "Prisoner_Random.h"
+
 
 const bool random_search{ false }; // set to true to search boxes randomly
-const size_t num_sims{ 100 };
+const size_t num_sims{ 100000 };
 
 const size_t num_prisoners{ 100 };
 const size_t num_boxes{ num_prisoners };
 const size_t max_search_boxes{ num_boxes / 2 };
 
 void initialise_boxes(std::vector<size_t>& vec);
-void initialise_prisoners(std::vector<Prisoner*>& vec);
+void initialise_prisoners_rand(std::vector<Prisoner_Random*>& vec);
+void initialise_prisoners_loop(std::vector<Prisoner_Loop*>& vec);
+void deallocate_prisoners_rand(std::vector<Prisoner_Random*>& vec);
+void deallocate_prisoners_loop(std::vector<Prisoner_Loop*>& vec);
+
 void display_boxes(const std::vector<size_t>& vec);
-void display_prisoners(const std::vector<Prisoner*>& vec);
-bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner);
-bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner);
+//void display_prisoners(const std::vector<Prisoner*>& vec);
+bool search_boxes_loop(const std::vector<size_t>& boxes, Prisoner_Loop* prisoner);
+bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner_Random* prisoner);
 
 bool run_sim(const bool random_search, const std::vector<size_t>& boxes);
 void sim_master(double* loop_prob, double* random_prob);
@@ -115,7 +122,7 @@ double random_probability()
 
 void sim_master(double* loop_prob, double* random_prob)
 {
-	std::cout << "Starting sims...";
+	std::cout << "Running sims...";
 
 	// Variables that total successful runs (where all prisoners found their number)
 	size_t total_loop{};   // for the loop strategy
@@ -148,19 +155,19 @@ void sim_master(double* loop_prob, double* random_prob)
 
 bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 {
-	// vector of prisoners
-	std::vector<Prisoner*> prisoners;
-	initialise_prisoners(prisoners);
-	// display initialised prisoners
-	// display_prisoners(prisoners);
-
 	size_t num_found{};
 
 	if (random_search)
 	{
+		// vector of "random" prisoners
+		std::vector<Prisoner_Random*> prisoners_rand;
+		initialise_prisoners_rand(prisoners_rand);
+		// display initialised prisoners
+		// display_prisoners(prisoners);
+
 		// search randomly
 		// loop over each prisoner and search for their number
-		for (auto p : prisoners)
+		for (auto p : prisoners_rand)
 		{
 			// if even one prisoner doesnt find their number, there is no point in continuing
 			if (!search_boxes_random(boxes, p))
@@ -168,27 +175,58 @@ bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 
 			num_found++;
 		}
+
+		deallocate_prisoners_rand(prisoners_rand);
 	}
 	else
 	{
+		// vector of "random" prisoners
+		std::vector<Prisoner_Loop*> prisoners_loop;
+		initialise_prisoners_loop(prisoners_loop);
+		// display initialised prisoners
+		// display_prisoners(prisoners);
+
 		// search using proposed technique
 		// loop over each prisoner and search for their number
-		for (auto p : prisoners)
+		for (auto p : prisoners_loop)
 		{
 			// if even one prisoner doesnt find their number, there is no point in continuing
-			if (!search_boxes(boxes, p))
+			if (!search_boxes_loop(boxes, p))
 				break;
 
 			num_found++;
 		}
+
+		deallocate_prisoners_loop(prisoners_loop);
+
 	}
 
-	// Deallocate heap memory
-	for (auto p : prisoners)
-		delete p;
-	prisoners.clear();
+
 
 	return (num_found == num_prisoners);
+}
+
+
+/*
+For random prisoners
+*/
+void deallocate_prisoners_rand(std::vector<Prisoner_Random*>& vec)
+{
+	// Deallocate heap memory
+	for (auto p : vec)
+		delete p;
+	vec.clear();
+}
+
+/*
+For loop prisoners
+*/
+void deallocate_prisoners_loop(std::vector<Prisoner_Loop*>& vec)
+{
+	// Deallocate heap memory
+	for (auto p : vec)
+		delete p;
+	vec.clear();
 }
 
 void initialise_boxes(std::vector<size_t>& vec)
@@ -203,15 +241,26 @@ void initialise_boxes(std::vector<size_t>& vec)
 	std::ranges::shuffle(vec, rd);
 }
 
-void initialise_prisoners(std::vector<Prisoner*>& vec)
+void initialise_prisoners_rand(std::vector<Prisoner_Random*>& vec)
 {
 	for (size_t i{}; i < num_prisoners; ++i)
 	{
-		Prisoner* p = new Prisoner{ i, num_prisoners, max_search_boxes };
+		Prisoner_Random* p = new Prisoner_Random{ i, num_prisoners, max_search_boxes };
 		vec.push_back(p);
 		// need to deallocate this onece the sim is done
 	}
 }
+
+void initialise_prisoners_loop(std::vector<Prisoner_Loop*>& vec)
+{
+	for (size_t i{}; i < num_prisoners; ++i)
+	{
+		Prisoner_Loop* p = new Prisoner_Loop{ i, num_prisoners, max_search_boxes };
+		vec.push_back(p);
+		// need to deallocate this onece the sim is done
+	}
+}
+
 
 void display_boxes(const std::vector<size_t>& vec)
 {
@@ -221,15 +270,15 @@ void display_boxes(const std::vector<size_t>& vec)
 		std::cout << "Box " << i++ << ":\t" << box << std::endl;
 }
 
-void display_prisoners(const std::vector<Prisoner*>& vec)
-{
-	std::cout << "\n=== Prisoners ===" << std::endl;
-	std::cout << std::boolalpha;
-	for (const auto prisoner : vec)
-		prisoner->display();
-}
+//void display_prisoners(const std::vector<Prisoner*>& vec)
+//{
+//	std::cout << "\n=== Prisoners ===" << std::endl;
+//	std::cout << std::boolalpha;
+//	for (const auto prisoner : vec)
+//		prisoner->display();
+//}
 
-bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner)
+bool search_boxes_loop(const std::vector<size_t>& boxes, Prisoner_Loop* prisoner)
 {
 	bool found{ false };
 	while (!found && prisoner->still_boxes_left())
@@ -245,7 +294,7 @@ bool search_boxes(const std::vector<size_t>& boxes, Prisoner* prisoner)
 /*
 Need to search random boxes, dont search the same box more than once
 */
-bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner* prisoner)
+bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner_Random* prisoner)
 {
 	bool found{ false };
 	while (!found && prisoner->still_boxes_left())

@@ -129,10 +129,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Prisoner.cpp" />
+    <ClCompile Include="Prisoner_Loop.cpp" />
+    <ClCompile Include="Prisoner_Random.cpp" />
     <ClCompile Include="Prison_Riddle2_cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Prisoner.h" />
+    <ClInclude Include="Prisoner_Loop.h" />
+    <ClInclude Include="Prisoner_Random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
