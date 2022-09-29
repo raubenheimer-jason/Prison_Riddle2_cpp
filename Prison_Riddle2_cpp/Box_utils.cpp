@@ -14,8 +14,6 @@ void initialise_boxes(std::vector<size_t>& vec)
 }
 
 
-
-
 void display_boxes(const std::vector<size_t>& vec)
 {
 	size_t i{};
@@ -23,4 +21,3 @@ void display_boxes(const std::vector<size_t>& vec)
 	for (auto box : vec)
 		std::cout << "Box " << i++ << ":\t" << box << std::endl;
 }
-

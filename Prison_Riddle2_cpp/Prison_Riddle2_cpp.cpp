@@ -1,15 +1,26 @@
 /*
-TODO: Use inheritance to have "Loop_Prisoner" and "Random_Prisoner" which are derrived from "Prisoner"
-		-> override "get_box_to_search" method
+Prison Riddle:
+YouTube video explaining the riddle:
+https://www.youtube.com/watch?v=iSNsgj1OCLA&ab_channel=Veritasium
+
+This code compares the theoretical success rate, of both random
+box selection and box selection using the "loop" strategy, with
+a simulated output.
+
+The theoretical probabilities are calculated in this main file.
+
+The simulations are performed using a vector of boxes with 
+random numbers in each vector position. The index of the vector
+is the "number on the box" and the value in each vector position
+is the "number on the slip inside the box".
+
+The prisoners each have a unique number.
+The Prisoner_Random and Prisoner_Loop classes are derrived from
+the Prisoner class.
 */
 
 #include <iostream>
-//#include <iomanip> // setprecision
 #include <vector>
-//#include <algorithm>
-//#include <ranges>
-//#include <random>
-//#include <numeric> // iota
 #include <cmath> // pow
 
 #include "Prisoner_Loop.h"
@@ -25,14 +36,6 @@ const size_t num_boxes{ num_prisoners };
 const size_t max_search_boxes{ num_boxes / 2 };
 
 // Function prototypes
-//void initialise_boxes(std::vector<size_t>& vec);
-//void initialise_prisoners_rand(std::vector<Prisoner_Random*>& vec);
-//void initialise_prisoners_loop(std::vector<Prisoner_Loop*>& vec);
-//void deallocate_prisoners_rand(std::vector<Prisoner_Random*>& vec);
-//void deallocate_prisoners_loop(std::vector<Prisoner_Loop*>& vec);
-//void display_boxes(const std::vector<size_t>& vec);
-//bool search_boxes_loop(const std::vector<size_t>& boxes, Prisoner_Loop* prisoner);
-//bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner_Random* prisoner);
 bool run_sim(const bool random_search, const std::vector<size_t>& boxes);
 void sim_master(double* loop_prob, double* random_prob);
 double random_probability();
@@ -200,7 +203,3 @@ bool run_sim(const bool random_search, const std::vector<size_t>& boxes)
 
 	return (num_found == num_prisoners);
 }
-
-
-
-

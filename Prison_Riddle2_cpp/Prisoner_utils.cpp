@@ -12,6 +12,7 @@ void deallocate_prisoners_rand(std::vector<Prisoner_Random*>& vec)
 	vec.clear();
 }
 
+
 /*
 For loop prisoners
 */
@@ -34,6 +35,7 @@ void initialise_prisoners_rand(size_t num_prisoners, size_t max_search_boxes, st
 	}
 }
 
+
 void initialise_prisoners_loop(size_t num_prisoners, size_t max_search_boxes, std::vector<Prisoner_Loop*>& vec)
 {
 	for (size_t i{}; i < num_prisoners; ++i)
@@ -43,6 +45,7 @@ void initialise_prisoners_loop(size_t num_prisoners, size_t max_search_boxes, st
 		// need to deallocate this onece the sim is done
 	}
 }
+
 
 bool search_boxes_loop(const std::vector<size_t>& boxes, Prisoner_Loop* prisoner)
 {
@@ -72,6 +75,7 @@ bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner_Random* pris
 	return found;
 }
 
+
 //void display_prisoners(const std::vector<Prisoner*>& vec)
 //{
 //	std::cout << "\n=== Prisoners ===" << std::endl;
@@ -79,5 +83,3 @@ bool search_boxes_random(const std::vector<size_t>& boxes, Prisoner_Random* pris
 //	for (const auto prisoner : vec)
 //		prisoner->display();
 //}
-
-
