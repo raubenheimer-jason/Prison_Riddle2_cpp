@@ -1,8 +1,9 @@
-#ifndef _PRISONER_H_
-#define _PRISONER_H_
+#pragma once
 
 #include <cstdint> // size_t
 #include <vector>
+#include <iostream>
+
 
 class Prisoner
 {
@@ -26,5 +27,3 @@ public:
 	const size_t get_number() const;
 	const size_t get_boxes_searched() const;
 };
-
-#endif // _PRISONER_H_
