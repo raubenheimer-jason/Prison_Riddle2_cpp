@@ -1,4 +1,4 @@
-#include "Prisoner_Loop.h"
+#include "Prisoner_Loop.hpp"
 
 // Constructor
 Prisoner_Loop::Prisoner_Loop(const size_t number, const size_t num_prisoners, const size_t max_search_boxes)

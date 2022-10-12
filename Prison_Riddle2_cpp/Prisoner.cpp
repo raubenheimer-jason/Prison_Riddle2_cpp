@@ -1,4 +1,4 @@
-#include "Prisoner.h"
+#include "Prisoner.hpp"
 
 // Constructor
 Prisoner::Prisoner(const size_t number, const size_t num_prisoners, const size_t max_search_boxes)

@@ -1,5 +1,5 @@
 
-#include "Prisoner_utils.h"
+#include "Prisoner_utils.hpp"
 
 /*
 For random prisoners

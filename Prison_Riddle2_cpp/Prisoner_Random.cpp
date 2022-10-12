@@ -1,4 +1,4 @@
-#include "Prisoner_Random.h"
+#include "Prisoner_Random.hpp"
 
 // Constructor
 Prisoner_Random::Prisoner_Random(const size_t number, const size_t num_prisoners, const size_t max_search_boxes)

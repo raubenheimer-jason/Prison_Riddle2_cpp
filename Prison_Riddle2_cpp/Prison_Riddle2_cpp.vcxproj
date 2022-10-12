@@ -129,18 +129,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Box_utils.cpp" />
+    <ClCompile Include="Calc_probabilities.cpp" />
     <ClCompile Include="Prisoner.cpp" />
     <ClCompile Include="Prisoner_Loop.cpp" />
     <ClCompile Include="Prisoner_Random.cpp" />
     <ClCompile Include="Prisoner_utils.cpp" />
-    <ClCompile Include="Prison_Riddle2_cpp.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sim_utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Box_utils.h" />
-    <ClInclude Include="Prisoner.h" />
-    <ClInclude Include="Prisoner_Loop.h" />
-    <ClInclude Include="Prisoner_Random.h" />
-    <ClInclude Include="Prisoner_utils.h" />
+    <ClInclude Include="Box_utils.hpp" />
+    <ClInclude Include="Calc_probabilities.hpp" />
+    <ClInclude Include="Prisoner.hpp" />
+    <ClInclude Include="Prisoner_Loop.hpp" />
+    <ClInclude Include="Prisoner_Random.hpp" />
+    <ClInclude Include="Prisoner_utils.hpp" />
+    <ClInclude Include="Sim_utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

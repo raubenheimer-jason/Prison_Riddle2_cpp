@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Prison_Riddle2_cpp.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Prisoner.cpp">
@@ -33,21 +33,33 @@
     <ClCompile Include="Box_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Calc_probabilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sim_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Prisoner.h">
+    <ClInclude Include="Prisoner.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prisoner_Loop.h">
+    <ClInclude Include="Prisoner_Loop.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prisoner_Random.h">
+    <ClInclude Include="Prisoner_Random.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prisoner_utils.h">
+    <ClInclude Include="Prisoner_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Box_utils.h">
+    <ClInclude Include="Box_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Calc_probabilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sim_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

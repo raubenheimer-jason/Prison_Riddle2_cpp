@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Prisoner_Loop.h"
-#include "Prisoner_Random.h"
+#include "Prisoner_Loop.hpp"
+#include "Prisoner_Random.hpp"
 
 void initialise_prisoners_rand(size_t num_prisoners, size_t max_search_boxes, std::vector<Prisoner_Random*>& vec);
 void initialise_prisoners_loop(size_t num_prisoners, size_t max_search_boxes, std::vector<Prisoner_Loop*>& vec);
